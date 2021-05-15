@@ -1,27 +1,40 @@
 <template>
   <div>
-    <!-- <input id="todo-input" class="form-control form-control-lg" type="text" /> -->
-    <button @click="add">Add todo</button>
+    <input id='todo-input' 
+      class='form-control form-control-lg' 
+      v-on:keyup.enter='add' 
+      v-model='todoText'
+      type='text' />
   </div>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent } from "vue";
-import { state } from "../state";
+<script lang='ts'>
+import { defineComponent } from 'vue';
+import { state } from '../state';
+
+interface State {
+  todoText: string
+}
 
 export default defineComponent({
-  name: "TodoInput",
+  name: 'TodoInput',
   props: {},
   setup: () => {},
+  data: (): State => {
+    return {
+      todoText: ''
+    }
+  },
   methods: {
     add() {
-      state.todos.push({ text: "Hello world!", checked: false });
+      state.todos.push({ text: this.todoText, checked: false });
+      this.todoText = ''
     },
   },
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 #todo-input {
   background-color: rgba(0, 0, 0, 0);
   box-shadow: none;

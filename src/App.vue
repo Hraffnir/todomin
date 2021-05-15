@@ -3,8 +3,6 @@
     <todo-input />
 
     <todo-list />
-
-    <!-- TODO: Color changer option (with different modes) -->
   </div>
 </template>
 
@@ -31,6 +29,6 @@ html {
 }
 
 .container {
-  background-color: blue;
+  // background-color: blue;
 }
 </style>
