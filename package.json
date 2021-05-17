@@ -7,6 +7,9 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@types/uuid": "^8.3.0",
+    "idb": "^6.0.0",
+    "uuid": "^8.3.2",
     "vue": "^3.0.5"
   },
   "devDependencies": {

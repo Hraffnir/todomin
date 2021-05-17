@@ -17,6 +17,8 @@ export default defineComponent({
     TodoInput,
     TodoList
   },
+  setup: () => {
+  }
 });
 </script>
 

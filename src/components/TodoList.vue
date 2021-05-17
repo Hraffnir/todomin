@@ -1,7 +1,7 @@
 <template>
 
-  <div class="form-check" v-for="item in todos" :key="item.text">
-    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <div class="form-check" v-for="item in data" :key="item.text">
+    <input class="form-check-input" type="checkbox" :checked="item.completed" @change="checked(item)">
     <label class="form-check-label" for="flexCheckDefault">
       {{ item.text }}
     </label>
@@ -9,16 +9,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { state } from "../state";
+import { defineComponent, onMounted, ref } from "vue";
+import { completeTodo, getTodos } from "../api/indexeddb.service";
+import Todo from "../models/todo";
 
 export default defineComponent({
   name: "TodoList",
   props: {},
-  setup: () => {},
-  computed: {
-    todos() {
-      return state.todos
+  setup: () => {
+    const data = ref([] as Todo[]);
+
+    onMounted(async () => {
+      data.value = await getTodos();
+    }) 
+
+    return {
+      data
+    }
+  },
+  methods: {
+    async checked(todo: Todo) {
+      const clonedTodo = Object.assign({} as Todo, todo)
+      await completeTodo(clonedTodo);
     }
   }
 });

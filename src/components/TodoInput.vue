@@ -10,7 +10,8 @@
 
 <script lang='ts'>
 import { defineComponent } from 'vue';
-import { state } from '../state';
+import Todo from '../models/todo';
+import { addTodo } from '../api/indexeddb.service';
 
 interface State {
   todoText: string
@@ -26,9 +27,12 @@ export default defineComponent({
     }
   },
   methods: {
-    add() {
-      state.todos.push({ text: this.todoText, checked: false });
-      this.todoText = ''
+    async add() {
+      var todo = new Todo(this.todoText);
+      await addTodo(todo);
+      this.todoText = '';
+
+      // state.todos.push({ text: this.todoText, checked: false });
     },
   },
 });
