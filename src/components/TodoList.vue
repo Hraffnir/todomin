@@ -25,7 +25,6 @@ export default defineComponent({
   },
   computed: {
     todos() {
-      console.log(state.todos)
       return state.todos
     }
   }
@@ -33,4 +32,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
 </style>

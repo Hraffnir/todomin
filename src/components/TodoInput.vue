@@ -9,9 +9,8 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent } from 'vue';
+import { defineComponent, getCurrentInstance } from 'vue';
 import Todo from '../models/todo';
-import { addTodo } from '../api/indexeddb.service';
 import { state } from '../state';
 
 interface State {
@@ -28,13 +27,34 @@ export default defineComponent({
     }
   },
   methods: {
-    async add() {
-      var todo = new Todo(this.todoText);
-      await addTodo(todo);
-      this.todoText = '';
+    async add(event: KeyboardEvent) {
+      let todo = new Todo(this.todoText)
 
-      state.todos.push(todo);
+      if (event.shiftKey && event.key === "Enter"){
+        todo.sequenceNumber = 1;
+        let todosCopy = [...state.todos]
+          .sort((prev, next) => prev.sequenceNumber - next.sequenceNumber)
+          .map((i) => { i.sequenceNumber++; return i; });
+
+        todosCopy.unshift(todo);
+
+        state.todos = [...todosCopy];
+      } else {
+        todo.sequenceNumber = this.getNextSequenceNumber();
+        state.todos.push(todo);
+      } 
+
+      this.todoText = '';
+      console.log('After', state.todos);
     },
+    getNextSequenceNumber() {
+      if(state.todos.length === 0) { return 1 }
+
+      return state.todos.reduce((prev, cur) => {
+        return (prev.sequenceNumber > cur.sequenceNumber) ?
+          prev : cur
+      }).sequenceNumber++;
+    }
   },
 });
 </script>
