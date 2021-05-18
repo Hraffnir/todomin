@@ -7,9 +7,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { getTodos } from "./api/indexeddb.service";
 import TodoInput from "./components/TodoInput.vue";
 import TodoList from "./components/TodoList.vue";
+import Todo from "./models/todo";
+import { state } from "./state";
 
 export default defineComponent({
   name: 'Todomin (Pronounced "too-doo-muhn")',
@@ -18,7 +21,13 @@ export default defineComponent({
     TodoList
   },
   setup: () => {
-  }
+    const data = ref([] as Todo[]);
+
+    onMounted(async () => {
+      const todos = await getTodos() as Todo[];
+      state.todos = [...todos];
+    })
+  },
 });
 </script>
 
@@ -28,9 +37,5 @@ export default defineComponent({
 body,
 html {
   background: #d56ca5;
-}
-
-.container {
-  // background-color: blue;
 }
 </style>

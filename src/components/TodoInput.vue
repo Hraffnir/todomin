@@ -12,6 +12,7 @@
 import { defineComponent } from 'vue';
 import Todo from '../models/todo';
 import { addTodo } from '../api/indexeddb.service';
+import { state } from '../state';
 
 interface State {
   todoText: string
@@ -32,7 +33,7 @@ export default defineComponent({
       await addTodo(todo);
       this.todoText = '';
 
-      // state.todos.push({ text: this.todoText, checked: false });
+      state.todos.push(todo);
     },
   },
 });
