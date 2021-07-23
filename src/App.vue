@@ -12,7 +12,6 @@ import { getTodos } from "./api/indexeddb.service";
 import TodoInput from "./components/TodoInput.vue";
 import TodoList from "./components/TodoList.vue";
 import Todo from "./models/todo";
-import Todos from "./models/todos";
 import { state } from "./state";
 
 export default defineComponent({

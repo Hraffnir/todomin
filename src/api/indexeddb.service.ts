@@ -18,8 +18,7 @@ export async function addTodo(todo: Todo) {
     (await db).put(storeName, todo, todo.id);
 }
 
-export async function completeTodo(todo: Todo) {
-    todo.completed = true;
+export async function updateTodo(todo: Todo) {
     (await db).put(storeName, todo, todo.id);
 }
 
