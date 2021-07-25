@@ -6,6 +6,8 @@
       
       <label v-bind:class="{strikethrough: item.completed}" class="form-check-label" for="flexCheckDefault">
         {{ item.text }}
+        <span v-if="item.minutes > 0"> - {{ item.minutes }}m</span>
+        <span v-if="item.hours > 0"> - {{ item.hours }}h</span> 
       </label>
     </div>
   </div>

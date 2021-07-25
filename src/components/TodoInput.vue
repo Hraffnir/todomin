@@ -1,20 +1,26 @@
 <template>
-  <div>
-    <input id='todo-input' 
-      class='form-control form-control-lg' 
-      v-on:keyup.enter='add' 
-      v-model='todoText'
-      type='text' />
-  </div>
+    <div>
+        <input id='todo-input' 
+            autofocus
+            class='form-control form-control-lg' 
+            v-on:keyup.enter='add' 
+            v-model='todoText'
+            type='text' />
+
+        <input type="number" placeholder="Minutes" v-model='todoMinutes' v-on:keyup.enter='add'>
+        <input type="number" placeholder="Hours" v-model='todoHours' v-on:keyup.enter='add'>
+    </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, getCurrentInstance } from 'vue';
+import { defineComponent } from 'vue';
 import Todo from '../models/todo';
 import { state } from '../state';
 
 interface State {
-  todoText: string
+  todoText: string,
+  todoMinutes: number,
+  todoHours: number
 }
 
 export default defineComponent({
@@ -23,15 +29,21 @@ export default defineComponent({
   setup: () => {},
   data: (): State => {
     return {
-      todoText: ''
+      todoText: '',
+      todoMinutes: 0,
+      todoHours: 0
     }
   },
   methods: {
     async add(event: KeyboardEvent) {
       let todo = new Todo(this.todoText)
 
+        todo.minutes = this.todoMinutes;
+        todo.hours = this.todoHours;
+
       if (event.shiftKey && event.key === "Enter"){
         todo.sequenceNumber = 1;
+
         let todosCopy = [...state.todos]
           .sort((prev, next) => prev.sequenceNumber - next.sequenceNumber)
           .map((i) => { i.sequenceNumber++; return i; });
@@ -45,7 +57,6 @@ export default defineComponent({
       } 
 
       this.todoText = '';
-      console.log('After', state.todos);
     },
     getNextSequenceNumber() {
       if(state.todos.length === 0) { return 1 }
